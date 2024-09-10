@@ -1,5 +1,7 @@
 #include "quick_sort.h"
-#include "utility.h"  // Incluye el archivo de utilidad
+#include "utility.h"  
+
+//Link al propietario del codigo: https://www.programiz.com/dsa/quick-sort
 
 int partition(int array[], int low, int high) {
     int pivot = array[high];

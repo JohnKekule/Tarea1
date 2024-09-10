@@ -1,5 +1,11 @@
 #include "tradicional_.h"
 
+// Link al propietario del codigo: https://www.geeksforgeeks.org/strassens-matrix-multiplication/
+// Este código fue modificado para trabajar en módulos
+
+
+
+
 // Implementación de la multiplicación de matrices tradicional
 // A y B son las matrices de entrada, y C es la matriz que almacenará el resultado de la multiplicación.
 void multiply(const vector<vector<lld>>& A, const vector<vector<lld>>& B, vector<vector<lld>>& C) {

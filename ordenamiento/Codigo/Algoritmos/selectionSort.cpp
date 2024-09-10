@@ -1,6 +1,7 @@
 #include "selection_sort.h"
-#include "utility.h"  // Incluye el archivo de utilidad
+#include "utility.h"  
 
+//Link al propietario del codigo: https://www.programiz.com/dsa/selection-sort
 void selectionSort(int array[], int size) {
     for (int step = 0; step < size - 1; step++) {
         int min_idx = step;

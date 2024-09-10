@@ -1,11 +1,13 @@
 #include "strassen_.h"
 
-// Función para inicializar una matriz con ceros
+//Codigo obtenido de: https://www.geeksforgeeks.org/strassens-matrix-multiplication/
+//Este codigo si bien fue extraido de Geeks for Geeks, fue modificado para poder trabajar en modulos
+//y arreglar errores de compilacion (mayoritariamente modificado por chatGPT)
 Matrix inicializarMatriz(int size) {
     return Matrix(size, vector<lld>(size, 0));
 }
 
-// Función para sumar dos matrices
+
 Matrix sumarMatrices(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -14,7 +16,7 @@ Matrix sumarMatrices(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-// Función para restar dos matrices
+
 Matrix restarMatrices(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -23,7 +25,7 @@ Matrix restarMatrices(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-// Función de multiplicación tradicional para tamaños pequeños
+
 Matrix multiplicacionTradicional(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -35,7 +37,7 @@ Matrix multiplicacionTradicional(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-// Función principal de Strassen
+
 Matrix strassen(const Matrix &A, const Matrix &B, int n) {
     if (n <= 16) { // Caso base: usa multiplicación tradicional
         return multiplicacionTradicional(A, B, n);
@@ -47,7 +49,7 @@ Matrix strassen(const Matrix &A, const Matrix &B, int n) {
     Matrix B11 = inicializarMatriz(newSize), B12 = inicializarMatriz(newSize);
     Matrix B21 = inicializarMatriz(newSize), B22 = inicializarMatriz(newSize);
 
-    // Dividir las matrices A y B en submatrices
+
     for (int i = 0; i < newSize; i++) {
         for (int j = 0; j < newSize; j++) {
             A11[i][j] = A[i][j];
@@ -61,7 +63,7 @@ Matrix strassen(const Matrix &A, const Matrix &B, int n) {
         }
     }
 
-    // Calcular los 7 productos intermedios
+
     Matrix AResult = sumarMatrices(A11, A22, newSize);
     Matrix BResult = sumarMatrices(B11, B22, newSize);
     Matrix M1 = strassen(AResult, BResult, newSize);
@@ -86,7 +88,7 @@ Matrix strassen(const Matrix &A, const Matrix &B, int n) {
     BResult = sumarMatrices(B21, B22, newSize);
     Matrix M7 = strassen(AResult, BResult, newSize);
 
-    // Combinar los resultados en la matriz C
+
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < newSize; i++) {
         for (int j = 0; j < newSize; j++) {

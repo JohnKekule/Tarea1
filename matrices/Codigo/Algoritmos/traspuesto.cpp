@@ -1,6 +1,16 @@
 #include <vector>
 #include "optimizado.h"
 
+
+//Este codigo fue tomado de https://www.geeksforgeeks.org/strassens-matrix-multiplication/
+//Es una version mejorada de la multiplicacion de matrices tradicional
+//por lo que se tomo el codigo tradicional y se modifico para tranformarlo en la version optimizada
+
+
+
+
+
+
 // Función para trasponer matrices
 // A es la matriz de entrada y At será la matriz traspuesta de A.
 // Esta función intercambia las filas por columnas, es decir, At[j][i] = A[i][j].

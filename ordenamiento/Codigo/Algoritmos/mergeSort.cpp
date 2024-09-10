@@ -1,7 +1,7 @@
 #include "merge_sort.h"
-#include "utility.h"  // Incluye el archivo de utilidad
+#include "utility.h"  
 
-// Implementación de merge y mergeSort aquí
+//Link al propietario del codigo: https://www.programiz.com/dsa/merge-sort
 void merge(int arr[], int p, int q, int r) {
     int n1 = q - p + 1;
     int n2 = r - q;
