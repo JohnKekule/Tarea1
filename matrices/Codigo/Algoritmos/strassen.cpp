@@ -3,11 +3,15 @@
 //Codigo obtenido de: https://www.geeksforgeeks.org/strassens-matrix-multiplication/
 //Este codigo si bien fue extraido de Geeks for Geeks, fue modificado para poder trabajar en modulos
 //y arreglar errores de compilacion (mayoritariamente modificado por chatGPT)
+
+// Función que inicializa una matriz cuadrada de tamaño `size`, 
+// rellenándola con ceros. Devuelve la matriz recién creada.
 Matrix inicializarMatriz(int size) {
     return Matrix(size, vector<lld>(size, 0));
 }
 
-
+// Función que toma dos matrices cuadradas A y B de tamaño `n` 
+// y devuelve una nueva matriz C que es la suma de A y B.
 Matrix sumarMatrices(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -16,7 +20,8 @@ Matrix sumarMatrices(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-
+// Función que toma dos matrices cuadradas A y B de tamaño `n` 
+// y devuelve una nueva matriz C que es la resta de A y B.
 Matrix restarMatrices(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -25,7 +30,9 @@ Matrix restarMatrices(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-
+// Implementa la multiplicación tradicional de matrices. 
+// Toma dos matrices cuadradas A y B de tamaño `n` y devuelve la matriz C 
+// que es el resultado de multiplicar A por B.
 Matrix multiplicacionTradicional(const Matrix &A, const Matrix &B, int n) {
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < n; i++)
@@ -37,19 +44,25 @@ Matrix multiplicacionTradicional(const Matrix &A, const Matrix &B, int n) {
     return C;
 }
 
-
+// Implementa el algoritmo de Strassen para la multiplicación de matrices. 
+// Divide las matrices de entrada A y B en submatrices más pequeñas y utiliza 
+// un conjunto de multiplicaciones y sumas/restas para calcular el resultado 
+// más eficientemente que la multiplicación tradicional.
+// Si `n` es menor o igual a 16, usa la multiplicación tradicional.
 Matrix strassen(const Matrix &A, const Matrix &B, int n) {
-    if (n <= 16) { // Caso base: usa multiplicación tradicional
+    if (n <= 16) {
         return multiplicacionTradicional(A, B, n);
     }
 
     int newSize = n / 2;
+    
+    // Aquí dividimos las matrices A y B en cuatro submatrices cada una.
     Matrix A11 = inicializarMatriz(newSize), A12 = inicializarMatriz(newSize);
     Matrix A21 = inicializarMatriz(newSize), A22 = inicializarMatriz(newSize);
     Matrix B11 = inicializarMatriz(newSize), B12 = inicializarMatriz(newSize);
     Matrix B21 = inicializarMatriz(newSize), B22 = inicializarMatriz(newSize);
 
-
+    // Poblamos las submatrices.
     for (int i = 0; i < newSize; i++) {
         for (int j = 0; j < newSize; j++) {
             A11[i][j] = A[i][j];
@@ -63,7 +76,7 @@ Matrix strassen(const Matrix &A, const Matrix &B, int n) {
         }
     }
 
-
+    // Realizamos las operaciones de suma y resta necesarias para calcular los productos M1 a M7.
     Matrix AResult = sumarMatrices(A11, A22, newSize);
     Matrix BResult = sumarMatrices(B11, B22, newSize);
     Matrix M1 = strassen(AResult, BResult, newSize);
@@ -88,7 +101,8 @@ Matrix strassen(const Matrix &A, const Matrix &B, int n) {
     BResult = sumarMatrices(B21, B22, newSize);
     Matrix M7 = strassen(AResult, BResult, newSize);
 
-
+    // Una vez que tenemos todos los productos intermedios, combinamos los resultados 
+    // para obtener la matriz resultante C.
     Matrix C = inicializarMatriz(n);
     for (int i = 0; i < newSize; i++) {
         for (int j = 0; j < newSize; j++) {

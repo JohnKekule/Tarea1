@@ -12,7 +12,7 @@ using namespace std::chrono;
 
 typedef long long lld;  
 
-// Función para leer una matriz desde un archivo
+
 vector<vector<lld>> leerMatrizDesdeArchivo(const string &nombreArchivo) {
     ifstream archivo(nombreArchivo);
     if (!archivo) {
@@ -43,7 +43,7 @@ vector<vector<lld>> leerMatrizDesdeArchivo(const string &nombreArchivo) {
     return matriz;
 }
 
-// Función para verificar si una matriz es cuadrada
+
 bool esCuadrada(const vector<vector<lld>>& matriz) {
     int filas = matriz.size();
     if (filas == 0) return false; 
@@ -51,35 +51,33 @@ bool esCuadrada(const vector<vector<lld>>& matriz) {
     return filas == columnas;
 }
 
-// Medir el tiempo de ejecución de Strassen
+
 long long medirTiempoStrassen(const vector<vector<lld>>& A, int &tamano) {
-    // Verificar si la matriz es cuadrada
     if (!esCuadrada(A)) {
         cerr << "Error: La matriz A no es cuadrada." << endl;
         exit(1);
     }
 
-    // Multiplicar la matriz consigo misma
+
     auto inicio = high_resolution_clock::now();
 
-    tamano = A.size(); // Obtener el tamaño de la matriz
-    vector<vector<lld>> C = strassen(A, A, tamano);  // Multiplicar la matriz consigo misma
+    tamano = A.size(); 
+    vector<vector<lld>> C = strassen(A, A, tamano);  
 
     auto fin = high_resolution_clock::now();
     return duration_cast<milliseconds>(fin - inicio).count();
 }
 
 long long medirTiempoTradicional(const vector<vector<lld>>& A, int &tamano) {
-    // Verificar si la matriz es cuadrada
     if (!esCuadrada(A)) {
         cerr << "Error: La matriz A no es cuadrada." << endl;
         exit(1);
     }
 
-    // Multiplicar la matriz consigo misma
+
     auto inicio = high_resolution_clock::now();
 
-    tamano = A.size(); // Obtener el tamaño de la matriz
+    tamano = A.size(); 
     vector<vector<lld>> C(A.size(), vector<lld>(A.size()));
     multiply(A, A, C);
 
@@ -88,16 +86,16 @@ long long medirTiempoTradicional(const vector<vector<lld>>& A, int &tamano) {
 }
 
 long long medirTiempoOptimizado(const vector<vector<lld>>& A, int &tamano) {
-    // Verificar si la matriz es cuadrada
+
     if (!esCuadrada(A)) {
         cerr << "Error: La matriz A no es cuadrada." << endl;
         exit(1);
     }
 
-    // Multiplicar la matriz consigo misma
+
     auto inicio = high_resolution_clock::now();
 
-    tamano = A.size(); // Obtener el tamaño de la matriz
+    tamano = A.size(); 
     vector<vector<lld>> C(A.size(), vector<lld>(A.size()));
     multiply_O(A, A, C);
 
@@ -106,22 +104,22 @@ long long medirTiempoOptimizado(const vector<vector<lld>>& A, int &tamano) {
 }
 
 int main() {
-    // Nombre del archivo CSV
+
     string archivoCSV = "Tiempos_matrices.csv";
 
-    // Abrir el archivo CSV en modo append
+
     ofstream archivo(archivoCSV, ios::app);
     if (!archivo) {
         cerr << "No se pudo abrir el archivo CSV para escribir." << endl;
         return 1;
     }
 
-    // Si el archivo está vacío, escribir los encabezados
+
     if (archivo.tellp() == 0) {
         archivo << "Metodo,Tamano_matriz,Tiempo(ms)\n";
     }
 
-    // Definir los archivos de matrices y sus tamaños
+
     vector<string> nombresArchivos = {
         "matriz_cuadrada_100x100.txt",
         "matriz_cuadrada_200x200.txt",
@@ -136,19 +134,19 @@ int main() {
     for (const string& nombreArchivo : nombresArchivos) {
         vector<vector<lld>> matriz = leerMatrizDesdeArchivo(nombreArchivo);
 
-        // Verificar si la matriz es cuadrada
+
         if (!esCuadrada(matriz)) {
             cout << "Error: La matriz leída no es cuadrada." << endl;
             return 1;
         }
 
         int tamano;
-        // Medir el tiempo de Strassen multiplicando la matriz por sí misma
+
         long long tiempoEjecucion = medirTiempoStrassen(matriz, tamano);
         long long tiempoEjecucionTradicional = medirTiempoTradicional(matriz, tamano);
         long long tiempoEjecucionOptimizado = medirTiempoOptimizado(matriz, tamano);
 
-        // Escribir los resultados en el archivo CSV
+
         archivo << "Strassen," << tamano << "," << tiempoEjecucion << "\n";
         archivo << "Tradicional," << tamano << "," << tiempoEjecucionTradicional << "\n";
         archivo << "Optimizado," << tamano << "," << tiempoEjecucionOptimizado << "\n";
